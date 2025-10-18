@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.GoodsMapper">
+
+    <insert id="insertGoods" parameterType="JavaBean.good">
+        INSERT INTO goods (goodsCode, goodsName, goodsPrice)
+        VALUES (#{goodsCode}, #{goodsName}, #{goodsPrice})
+    </insert>
+
+    <select id="getAllGoods" resultType="JavaBean.good">
+        SELECT goodsCode, goodsName, goodsPrice FROM goods ORDER BY goodsCode
+    </select>
+
+    <select id="getGoodsByCode" parameterType="int" resultType="JavaBean.good">
+        SELECT goodsCode, goodsName, goodsPrice FROM goods WHERE goodsCode = #{goodsCode}
+    </select>
+
+    <delete id="deleteGoodsByCode" parameterType="int">
+        DELETE FROM goods WHERE goodsCode = #{goodsCode}
+    </delete>
+
+    <update id="updateGoods" parameterType="JavaBean.good">
+        UPDATE goods
+        SET goodsName = #{goodsName}, goodsPrice = #{goodsPrice}
+        WHERE goodsCode = #{goodsCode}
+    </update>
+
+    <select id="getAllGoodsCode" resultType="int">
+        SELECT goodsCode FROM goods ORDER BY goodsCode
+    </select>
+
+    <select id="getGoodsByPage" resultType="JavaBean.good">
+        SELECT
+        goodsCode AS goodsCode,     <!-- 映射到good.goodsCode -->
+        goodsName AS goodsName,     <!-- 映射到good.goodsName -->
+        goodsPrice AS goodsPrice    <!-- 映射到good.goodsPrice -->
+        FROM goods
+        ORDER BY goodsCode
+        LIMIT #{pageSize} OFFSET #{offset}
+    </select>
+
+
+    <select id="countOrdersGoodsByGoodsCode" resultType="int">
+        SELECT COUNT(*) FROM orders_goods WHERE goods_id = #{goodsCode}
+    </select>
+
+    <select id="getTotalGoodsCount" resultType="int">
+        SELECT COUNT(goodsCode) FROM goods
+    </select>
+</mapper>

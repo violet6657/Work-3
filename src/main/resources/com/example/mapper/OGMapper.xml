@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.OGMapper">
+
+    <insert id="insertOG" parameterType="JavaBean.good_order">
+        INSERT INTO orders_goods (`ogCodes`,`order_id`, `goods_id`, `quantity`)
+        VALUES (#{ogCodes}, #{order_id}, #{goods_id},#{quantity})
+    </insert>
+
+    <select id="getGoodsNameByOrderCode" resultType="String" parameterType="int">
+        SELECT goodsName from goods where goodsCode = (SELECT goods_id FROM orders_goods WHERE order_id = #{order_code})
+    </select>
+
+</mapper>
